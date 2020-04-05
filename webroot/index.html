@@ -2,16 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link type="text/css" href="/static/index.css" rel="stylesheet">
+    <link type="text/css" href="/static/dialog.css" rel="stylesheet">
     <title>Welcome to KRY</title>
+
 </head>
 <body>
-KRY status poller
-<ul id="service-list">
-</ul>
-<input type="text" id="url-name">
-<button id="post-service">Save</button>
+    <div class="container">
+        <h1>KRY status poller</h1>
+        <div id="create-wrapper">
+            <div class="item-wrapper">
+                <input type="text" placeholder="type service name" id="service-name">
+            </div>
+            <div class="item-wrapper">
+                <input type="text" placeholder="type service url name" id="url-name">
+            </div>
+            <div class="item-wrapper">
+                <button id="post-service">Save</button>
+            </div>
+        </div>
+        <ul id="service-list">
+        </ul>
+    </div>
+
+    <div id="update-dialog" class="dialog-wrapper">
+        <div class="dialog-close">x</div>
+        <div class="dialog">
+            <div class="dialog-header">Update Service</div>
+            <div class="dialog-form">
+                <label for="service-name-update">Service Name</label>
+                <input id="service-name-update" class="input" type="text">
+                <label for="service-url-update">Service Url</label>
+                <input id="service-url-update" class="input" type="text" >
+                <button type="button" class="update-button">Update Service</button>
+            </div>
+        </div>
+    </div>
 
 </body>
-<script src="static/code.js">
-</script>
+<script src="static/code.js"></script>
 </html>

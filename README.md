@@ -9,20 +9,20 @@ There is also a wishlist of features in two separate tracks - if you have time l
 
 Critical issues (required to complete the assignment):
 
-- Whenever the server is restarted, any added services disappear
-- There's no way to delete individual services
-- We want to be able to name services and remember when they were added
-- The HTTP poller is not implemented
+- Whenever the server is restarted, any added services disappear (done)
+- There's no way to delete individual services (done)
+- We want to be able to name services and remember when they were added (done)
+- The HTTP poller is not implemented (done)
 
 Frontend/Web track:
-- We want full create/update/delete functionality for services
-- The results from the poller are not automatically shown to the user (you have to reload the page to see results)
+- We want full create/update/delete functionality for services (done)
+- The results from the poller are not automatically shown to the user (you have to reload the page to see results) (done)
 - We want to have informative and nice looking animations on add/remove services
 
 Backend track
 - Simultaneous writes sometimes causes strange behavior
-- Protect the poller from misbehaving services (for example answering really slowly)
-- Service URL's are not validated in any way ("sdgf" is probably not a valid service)
+- Protect the poller from misbehaving services (for example answering really slowly) (timeout added)
+- Service URL's are not validated in any way ("sdgf" is probably not a valid service) (back-end control added)
 - A user (with a different cookie/local storage) should not see the services added by another user
 
 Spend maximum four hours working on this assignment - make sure to finish the issues you start.

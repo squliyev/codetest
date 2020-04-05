@@ -2,6 +2,7 @@ package se.kry.codetest;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.junit5.Timeout;
 import io.vertx.junit5.VertxExtension;
@@ -25,16 +26,56 @@ public class TestMainVerticle {
 
   @Test
   @DisplayName("Start a web server on localhost responding to path /service on port 8080")
-  @Timeout(value = 10, timeUnit = TimeUnit.SECONDS)
+  @Timeout(value = 100, timeUnit = TimeUnit.SECONDS)
   void start_http_server(Vertx vertx, VertxTestContext testContext) {
     WebClient.create(vertx)
-        .get(8080, "::1", "/service")
+        .get(8080, "::1", "/get-services")
         .send(response -> testContext.verify(() -> {
           assertEquals(200, response.result().statusCode());
           JsonArray body = response.result().bodyAsJsonArray();
-          assertEquals(1, body.size());
-          testContext.completeNow();
+          assertEquals(0, body.size());
+          InsertService(vertx,  testContext);
         }));
+
   }
 
+    private void InsertService(Vertx vertx,VertxTestContext testContext) {
+        WebClient.create(vertx)
+                .post(8080,"::1", "/insert-service")
+                .sendJsonObject(new JsonObject()
+                        .put("url", "https://www.kry.se/")
+                        .put("name", "kry"), response -> {
+                    if (response.succeeded()) {
+                        assertEquals(200, response.result().statusCode());
+                        GetService(vertx, testContext, 1, true);
+                    }
+                });
+    }
+
+    private void GetService(Vertx vertx, VertxTestContext testContext, int count, boolean callBack) {
+        WebClient.create(vertx)
+                .get(8080, "::1", "/get-services")
+                .send(response -> {
+                    assertEquals(200, response.result().statusCode());
+                    JsonArray body = response.result().bodyAsJsonArray();
+                    assertEquals(count, body.size());
+                    if(callBack) {
+                        DeleteService(vertx, testContext);
+                    }
+                    else  {
+                        testContext.completeNow();
+                    }
+                });
+    }
+
+    private void DeleteService(Vertx vertx, VertxTestContext testContext) {
+        WebClient.create(vertx)
+                .post(8080, "::1", "/delete-service")
+                .sendJsonObject(new JsonObject().put("url", "https://www.kry.se/"), response -> {
+                    if (response.succeeded()) {
+                        assertEquals(200, response.result().statusCode());
+                        GetService(vertx, testContext, 0, false);
+                    }
+                });
+    }
 }
